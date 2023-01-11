@@ -20,6 +20,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/xid"
 )
@@ -223,11 +224,14 @@ func init() {
 }
 
 func main() {
-	router := gin.Default()
-	router.POST("/recipes", NewRecipeHandler)
-	router.GET("/recipes", ListRecipesHandler)
-	router.PUT("/recipes/:id", UpdateRecipeHandler)
-	router.DELETE("/recipes/:id", DeleteRecipeHandler)
-	router.GET("/recipes/:id", GetRecipeHandler)
-	router.Run(":3000")
+	server := gin.Default()
+	server.Use(cors.Default())
+
+	server.POST("/recipes", NewRecipeHandler)
+	server.GET("/recipes", ListRecipesHandler)
+	server.PUT("/recipes/:id", UpdateRecipeHandler)
+	server.DELETE("/recipes/:id", DeleteRecipeHandler)
+	server.GET("/recipes/:id", GetRecipeHandler)
+
+	server.Run(":3000")
 }
